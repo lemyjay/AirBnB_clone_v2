@@ -24,16 +24,10 @@ class FileStorage:
                     'Review': Review
                   }
 
-        the_class = ''
-
-        for k, v in classes.items():
-            if v == cls:
-                the_class = k
-
-        if the_class:
+        if cls in classes.values():
             result = {}
             for key, value in FileStorage.__objects.items():
-                if key.split('.')[0] == the_class:
+                if isinstance(value, cls):
                     result.update({key: value})
             return result
         else:
