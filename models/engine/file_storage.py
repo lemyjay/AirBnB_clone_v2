@@ -74,3 +74,14 @@ class FileStorage:
         """Deletes and obj from __objects if present"""
         if obj:
             del self.all()[obj.to_dict()['__class__'] + '.' + obj.id]
+
+    def cities(self, state_id=None):
+        """Returns a list of cities with the given state_id"""
+        from models.state import State
+        from models.city import City
+
+        cities = []
+        for key, obj in self.__objects.items():
+            if isinstance(obj, City) and obj.state_id == state_id:
+                cities.append(obj)
+        return cities
