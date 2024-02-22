@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -124,17 +124,20 @@ class HBNBCommand(cmd.Cmd):
         elif class_name not in HBNBCommand.classes:
             print(f'** class "{class_name}" does not exist **')
             return
-        
+
         class_params = {}
         for param in args[1:]:
             # Parse parameter and value
-            param_name, param_value = param.split('=')            
+            param_name, param_value = param.split('=')
 
             # Parse value according to type
             if param_value[0] == '"' and param_value[-1] == '"':
-                param_value = param_value.replace('_', ' ') # underscores with spaces
-                param_value = param_value.replace('"', '') # escaping double quote
-            elif '.' in param_value: # Float
+                # underscores with spaces
+                param_value = param_value.replace('_', ' ')
+
+                # escaping double quote
+                param_value = param_value.replace('"', '')
+            elif '.' in param_value:  # Float
                 param_value = float(param_value)
             else:
                 try:
@@ -142,7 +145,7 @@ class HBNBCommand(cmd.Cmd):
                 except ValueError:
                     print(f'Error: Invalid value for parameter "{param_name}"')
                     return
-                
+
             class_params[param_name] = param_value
 
         class_params['created_at'] = datetime.now().isoformat()
@@ -215,7 +218,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -235,8 +238,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in storage.all(HBNBCommand.classes[args]).items():
-                #if v.__class__.__name__ == args:#if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                # if v.__class__.__name__ == args:#if k.split('.')[0] == args:
+                print_list.append(str(v))
         else:
             for k, v in storage.all().items():
                 print_list.append(str(v))
@@ -300,7 +303,7 @@ class HBNBCommand(cmd.Cmd):
                 args.append(v)
         else:  # isolate args
             args = args[2]
-            if args and args[0] =='\"':  # check for quoted arg
+            if args and args[0] == '\"':  # check for quoted arg
                 second_quote = args.find('\"', 1)
                 att_name = args[1:second_quote]
                 args = args[second_quote + 1:]
@@ -347,6 +350,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
