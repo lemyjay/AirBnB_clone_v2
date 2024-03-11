@@ -27,7 +27,7 @@ sudo chown -R ubuntu:ubuntu /data/
 
 #   - Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static (ex: https://mydomainname.tech/hbnb_static). 
 config_block="
-    location /hbnb_static {
+    location /hbnb_static/ {
         alias /data/web_static/current/;
     }
 "
