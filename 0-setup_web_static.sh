@@ -8,6 +8,8 @@ if ! [ -x "$(command -v nginx)" ]; then
     sudo service nginx start
 fi
 
+sudo service nginx start
+
 # Create necessary directories
 sudo mkdir -p /data/web_static/releases/test /data/web_static/shared
 
