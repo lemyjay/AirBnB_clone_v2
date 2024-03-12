@@ -7,9 +7,6 @@ servers using do_deploy function.
 from fabric.api import local, env, put, run
 from os.path import exists
 from datetime import datetime
-# Define the user and SSH key for accessing the server
-env.user = 'ubuntu'
-env.key_filename = '~/.ssh/my_key'
 
 # Define the list of web servers
 env.hosts = ['100.25.0.107', '100.26.252.88']
