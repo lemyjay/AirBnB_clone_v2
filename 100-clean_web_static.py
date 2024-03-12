@@ -67,8 +67,6 @@ def do_deploy(archive_path):
         my_command += ' /data/web_static/releases/{}/'.format(archive_name)
         run(my_command)
 
-        run('ln -s {} {}'.format(path_no_ext, symlink))
-
         # Remove the empty web_static folder
         run('rm -rf /data/web_static/releases/{}/web_static'
             .format(archive_name))
