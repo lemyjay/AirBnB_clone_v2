@@ -5,7 +5,7 @@ servers using do_deploy function.
 """
 
 from fabric.api import local, env, put, run
-from os.path import exists
+import os.path
 from datetime import datetime
 
 # Define the list of web servers
@@ -26,11 +26,8 @@ def do_pack():
             now.year, now.month, now.day, now.hour, now.minute, now.second)
 
         # Compress the contents of the web_static folder into a .tgz archive
-        result = local("tar -cvzf {} web_static".format(file_name))
+        local("tar -cvzf {} web_static".format(file_name))
 
-        # Check if the archive has been correctly generated
-        if result.failed:
-            return None
         return file_name
     except Exception:
         return None
@@ -42,7 +39,7 @@ def do_deploy(archive_path):
     Returns False if the file at the path archive_path doesn’t exist, else it
     deploys it
     '''
-    if not exists(archive_path):
+    if not os.path.isfile(archive_path):
         return False
 
     try:
@@ -80,11 +77,9 @@ def do_deploy(archive_path):
         # Create a new symbolic link to the new version
         run('ln -s /data/web_static/releases/{}/ /data/web_static/current'
             .format(archive_name))
-
-        print("New version deployed!")
         return True
 
-    except Exception as e:
+    except Exception:
         return False
 
 
@@ -93,10 +88,7 @@ def deploy():
     Calls do_pack and do_deploy functions
     """
     archive_path = do_pack()
-    if archive_path:
-        return do_deploy(archive_path)
-    else:
-        return False
+    return do_deploy(archive_path)
 
 
 def do_clean(number=0):
