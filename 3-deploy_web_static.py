@@ -4,8 +4,31 @@ A Fabric script that distributes the archive to the web
 servers using do_deploy function.
 """
 
-from fabric.api import env, put, run
+from fabric.api import local, env, put, run
 from os.path import exists
+from datetime import datetime
+
+
+def do_pack():
+    """
+    Generates a .tgz archive from the contents of the web_static folder.
+    """
+    # Create the folder 'versions' if it doesn't exist
+    local("mkdir -p versions")
+
+    # Create the name of the archive with the current date and time
+    now = datetime.now()
+    file_name = "versions/web_static_{}{}{}{}{}{}.tgz".format(
+        now.year, now.month, now.day, now.hour, now.minute, now.second)
+
+    # Compress the contents of the web_static folder into a .tgz archive
+    result = local("tar -cvzf {} web_static".format(file_name))
+
+    # Check if the archive has been correctly generated
+    if result.failed:
+        return None
+    return file_name
+
 
 # Define the user and SSH key for accessing the server
 env.user = 'ubuntu'
@@ -67,3 +90,11 @@ def do_deploy(archive_path):
 
     except Exception as e:
         return False
+
+
+def deploy():
+    """
+    Calls do_pack and do_deploy functions
+    """
+    file_name = do_pack()
+    return do_deploy(file_name)
