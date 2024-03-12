@@ -97,4 +97,6 @@ def deploy():
     Calls do_pack and do_deploy functions
     """
     file_name = do_pack()
+    if file_name is None:
+        return False
     return do_deploy(file_name)
