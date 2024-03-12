@@ -7,6 +7,12 @@ servers using do_deploy function.
 from fabric.api import local, env, put, run
 from os.path import exists
 from datetime import datetime
+# Define the user and SSH key for accessing the server
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/my_key'
+
+# Define the list of web servers
+env.hosts = ['100.25.0.107', '100.26.252.88']
 
 
 def do_pack():
@@ -28,14 +34,6 @@ def do_pack():
     if result.failed:
         return None
     return file_name
-
-
-# Define the user and SSH key for accessing the server
-env.user = 'ubuntu'
-env.key_filename = '~/.ssh/my_key'
-
-# Define the list of web servers
-env.hosts = ['100.25.0.107', '100.26.252.88']
 
 
 def do_deploy(archive_path):
@@ -96,7 +94,8 @@ def deploy():
     """
     Calls do_pack and do_deploy functions
     """
-    file_name = do_pack()
-    if file_name is None:
+    archive_path = do_pack()
+    if archive_path:
+        return do_deploy(archive_path)
+    else:
         return False
-    return do_deploy(file_name)
