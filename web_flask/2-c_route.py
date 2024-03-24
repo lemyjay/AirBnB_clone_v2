@@ -22,7 +22,7 @@ def hbnb():
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_text(text):
-    """Route that display “C ” followed by the value of the text variable
+    """Route that displays “C ” followed by the value of the text variable
     (replaces underscore _ symbols with a space )
     """
     if text:
